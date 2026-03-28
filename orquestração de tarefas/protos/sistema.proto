@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+// Definição do serviço de tarefas
+service Orquestrador {
+  // Login simples para receber um token 
+  rpc Login (LoginRequest) returns (TokenResponse);
+  
+  // Submissão de tarefas por clientes autenticados 
+  rpc SubmeterTarefa (TarefaRequest) returns (TarefaResponse);
+  
+  // Consulta de status em tempo real 
+  rpc ConsultarStatus (StatusRequest) returns (StatusResponse);
+}
+
+message LoginRequest {
+  string usuario = 1;
+  string senha = 2;
+}
+
+message TokenResponse {
+  string token = 1;
+  bool sucesso = 2;
+}
+
+message TarefaRequest {
+  string token = 1;
+  string descricao = 2;
+  int32 tempo_logico = 3; // Para o Relógio de Lamport
+}
+
+message TarefaResponse {
+  string id_tarefa = 1;
+  string mensagem = 2;
+}
+
+message StatusRequest {
+  string id_tarefa = 1;
+}
+
+message StatusResponse {
+  string status = 1; // Ex: Pendente, Em Execução, Concluída 
